@@ -2830,42 +2830,51 @@
     };
   </script>
 
-<!-- ARCHIVE DRAWER PROTOTYPE: isolated from existing dossier/search code -->
+<!-- ARCHIVE DRAWER PROTOTYPE: independent of main site -->
 <style>
-#archive-drawer{position:fixed;right:0;top:24%;z-index:45;display:flex;align-items:flex-start;transform:translateX(calc(100% - 35px));transition:transform .55s cubic-bezier(.2,.8,.2,1);max-width:min(340px,90vw);font-family:Inter,sans-serif}
+#archive-drawer{position:fixed;right:0;top:24%;z-index:45;display:flex;align-items:flex-start;width:min(340px,94vw);transform:translateX(calc(100% - 35px));transition:transform .55s cubic-bezier(.2,.8,.2,1);font-family:Inter,sans-serif;pointer-events:none}
 #archive-drawer.open{transform:translateX(0)}
-#archive-handle{width:35px;min-width:35px;height:115px;border:1px solid #527e62;border-right:0;border-radius:9px 0 0 9px;background:linear-gradient(120deg,#283b32,#111a16);color:#a8f4ba;box-shadow:-5px 0 22px #36ff7750;cursor:pointer;transition:width .25s}
-#archive-handle:hover,#archive-handle:focus-visible{width:43px;min-width:43px}
-#archive-panel{width:305px;max-height:65vh;overflow:auto;padding:18px;background:linear-gradient(130deg,#1e2620,#111613);border:1px solid #4c7258;border-radius:0 0 0 12px;box-shadow:-15px 12px 38px #000a;color:#e4e9dd}
-.archive-folder{display:block;width:100%;margin:12px 0;padding:15px;text-align:left;color:#322b1b;background:#c7b58b;border:1px solid #e0d0a8;border-radius:3px 11px 4px 4px;cursor:pointer;font-weight:700;box-shadow:2px 5px 0 #8b7856}
-.archive-folder:hover,.archive-folder:focus-visible{background:#e0cea1}
-#archive-case{display:none;margin-top:18px;font-size:13px;line-height:1.6}
-#archive-case.visible{display:block}
-@media(max-width:700px){#archive-drawer{top:18%;max-width:min(320px,94vw)}#archive-panel{width:min(275px,calc(94vw - 35px));max-height:65vh}}
-@media(prefers-reduced-motion:reduce){#archive-drawer,#archive-handle{transition:none}}
+#archive-handle{pointer-events:auto;flex:0 0 35px;width:35px;height:100px;border:1px solid #527e62;border-right:0;border-radius:9px 0 0 9px;background:linear-gradient(120deg,#283b32,#111a16);color:#a8f4ba;box-shadow:-5px 0 22px #36ff7750;cursor:pointer}
+#archive-handle:hover,#archive-handle:focus-visible{background:#365b42;box-shadow:-5px 0 26px #36ff7790}
+#archive-panel{pointer-events:auto;flex:1;min-width:0;max-height:65vh;overflow:auto;padding:18px;background:linear-gradient(130deg,#1e2620,#111613);border:1px solid #4c7258;border-radius:0 0 0 12px;box-shadow:-15px 12px 38px #000a;color:#e4e9dd}
+#archive-folders{display:flex;flex-direction:column;gap:5px;max-height:220px;overflow-y:auto;overscroll-behavior:contain;padding:10px 4px}
+.archive-folder{position:relative;display:block;width:94%;margin:8px 0 0;padding:14px 10px;text-align:left;color:#322b1b;background:#c7b58b;border:1px solid #e0d0a8;border-radius:3px 3px 5px 5px;cursor:pointer;font-weight:700;box-shadow:2px 4px 0 #8b7856;transition:transform .2s,background .2s}
+.archive-folder::before{content:attr(data-tab);position:absolute;top:-15px;left:0;background:#d9c79b;border:1px solid #e0d0a8;border-bottom:0;border-radius:5px 5px 0 0;padding:2px 8px;font:700 10px monospace}
+.archive-folder:nth-child(even)::before{left:auto;right:0}
+.archive-folder:hover,.archive-folder:focus-visible,.archive-folder[aria-selected="true"]{background:#e0cea1;transform:translateY(-2px)}
+#archive-case{margin-top:14px;font-size:13px;line-height:1.6;border-top:1px solid #4c7258;padding-top:12px}
+@media(max-width:700px){#archive-drawer{top:auto;bottom:12px;width:min(315px,92vw);transform:translateX(calc(100% - 18px))}#archive-handle{flex-basis:18px;width:18px;height:72px;font-size:11px}#archive-panel{max-height:72vh;padding:12px}#archive-drawer.open{transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){#archive-drawer,.archive-folder{transition:none}}
 </style>
 <aside id="archive-drawer" aria-label="Архивная картотека">
 <button id="archive-handle" type="button" aria-controls="archive-panel" aria-expanded="false" aria-label="Открыть архивную картотеку">▤</button>
 <div id="archive-panel">
 <div style="font:700 12px monospace;color:#86dca1;letter-spacing:2px">UMBRELLA // ARCHIVES</div>
 <p style="margin-top:8px;font-size:13px">Картотека персонала и свидетелей</p>
-<button class="archive-folder" type="button" id="archive-jill" aria-expanded="false" aria-controls="archive-case">📁 JILL VALENTINE<br><small>ДЕЛО № 001 · S.T.A.R.S.</small></button>
-<section id="archive-case" aria-label="Досье Джилл Валентайн">
-<h3 style="font-size:17px;font-weight:800">Джилл Валентайн</h3>
-<p style="color:#a8e1b8">Jill Valentine · S.T.A.R.S. / BSAA</p>
-<p style="margin-top:10px">Бывшая участница подразделения S.T.A.R.S. полиции Раккун-Сити, пережившая инцидент в особняке Спенсера в 1998 году и события Resident Evil 3.</p>
-<p style="margin-top:8px">Позднее стала одной из основательниц BSAA. Это первое пробное досье; расширенная хронология и материалы будут добавлены отдельно.</p>
-</section>
+<div id="archive-folders" role="listbox" aria-label="Выбор досье">
+<button class="archive-folder" type="button" data-person="jill" data-tab="J. VALENTINE" aria-selected="true">JILL VALENTINE<br><small>ДЕЛО № 001 · S.T.A.R.S.</small></button>
+<button class="archive-folder" type="button" data-person="chris" data-tab="C. REDFIELD" aria-selected="false">CHRIS REDFIELD<br><small>ДЕЛО № 002 · S.T.A.R.S.</small></button>
+<button class="archive-folder" type="button" data-person="leon" data-tab="L. KENNEDY" aria-selected="false">LEON S. KENNEDY<br><small>ДЕЛО № 003 · R.P.D.</small></button>
+</div>
+<section id="archive-case" aria-live="polite" aria-label="Выбранное досье"></section>
 </div></aside>
 <script>
 (function(){
  const drawer=document.getElementById('archive-drawer');
  const handle=document.getElementById('archive-handle');
- const folder=document.getElementById('archive-jill');
  const dossier=document.getElementById('archive-case');
- handle.addEventListener('click',function(){const open=drawer.classList.toggle('open');handle.setAttribute('aria-expanded',String(open));handle.setAttribute('aria-label',open?'Закрыть архивную картотеку':'Открыть архивную картотеку');});
- folder.addEventListener('click',function(){const open=dossier.classList.toggle('visible');folder.setAttribute('aria-expanded',String(open));});
- document.addEventListener('keydown',function(e){if(e.key==='Escape'&&drawer.classList.contains('open')){drawer.classList.remove('open');handle.setAttribute('aria-expanded','false');handle.setAttribute('aria-label','Открыть архивную картотеку');}});
+ const folders=Array.from(document.querySelectorAll('#archive-folders .archive-folder'));
+ const records={
+ jill:{name:'Джилл Валентайн',subtitle:'Jill Valentine · S.T.A.R.S. / BSAA',text:'Участница S.T.A.R.S., пережившая инцидент в особняке Спенсера и события Раккун-Сити в 1998 году. Позднее стала одной из основательниц BSAA.'},
+ chris:{name:'Крис Редфилд',subtitle:'Chris Redfield · S.T.A.R.S. / BSAA',text:'Бывший участник S.T.A.R.S., переживший инцидент в особняке Спенсера. Один из основателей BSAA.'},
+ leon:{name:'Леон С. Кеннеди',subtitle:'Leon S. Kennedy · R.P.D. / правительство США',text:'Начинающий полицейский, оказавшийся в Раккун-Сити во время катастрофы 1998 года. Впоследствии стал федеральным агентом.'}
+ };
+ function select(person){const item=records[person];if(!item)return;folders.forEach(f=>f.setAttribute('aria-selected',String(f.dataset.person===person)));dossier.replaceChildren();const h=document.createElement('h3');h.style.cssText='font-size:17px;font-weight:800';h.textContent=item.name;const sub=document.createElement('p');sub.style.color='#a8e1b8';sub.textContent=item.subtitle;const p=document.createElement('p');p.style.marginTop='10px';p.textContent=item.text;dossier.append(h,sub,p);}
+ function setOpen(open){drawer.classList.toggle('open',open);handle.setAttribute('aria-expanded',String(open));handle.setAttribute('aria-label',open?'Закрыть архивную картотеку':'Открыть архивную картотеку');}
+ handle.addEventListener('click',()=>setOpen(!drawer.classList.contains('open')));
+ folders.forEach(f=>f.addEventListener('click',()=>select(f.dataset.person)));
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))setOpen(false)});
+ select('jill');
 })();
 </script>
 </body></html>
