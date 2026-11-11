@@ -2832,54 +2832,42 @@
 
 <!-- ARCHIVE DRAWER PROTOTYPE: independent of main site -->
 <style>
-#archive-drawer{position:fixed;right:0;top:24%;z-index:45;display:flex;align-items:flex-start;width:min(340px,94vw);transform:translateX(calc(100% - 35px));transition:transform .55s cubic-bezier(.2,.8,.2,1);font-family:Inter,sans-serif;pointer-events:none}
+#archive-drawer{position:fixed;right:0;top:18%;z-index:45;display:flex;align-items:flex-start;width:min(550px,94vw);transform:translateX(calc(100% - 35px));transition:transform .85s cubic-bezier(.16,1,.3,1);font-family:Inter,sans-serif;pointer-events:none}
 #archive-drawer.open{transform:translateX(0)}
-#archive-handle{pointer-events:auto;flex:0 0 35px;width:35px;height:100px;border:1px solid #527e62;border-right:0;border-radius:9px 0 0 9px;background:linear-gradient(120deg,#283b32,#111a16);color:#a8f4ba;box-shadow:-5px 0 22px #36ff7750;cursor:pointer}
+#archive-handle{pointer-events:auto;flex:0 0 35px;width:35px;height:108px;border:1px solid #527e62;border-right:0;border-radius:9px 0 0 9px;background:linear-gradient(120deg,#283b32,#111a16);color:#a8f4ba;box-shadow:-5px 0 22px #36ff7750;cursor:pointer;transition:background .35s,box-shadow .55s}
 #archive-handle:hover,#archive-handle:focus-visible{background:#365b42;box-shadow:-5px 0 26px #36ff7790}
-#archive-panel{pointer-events:auto;flex:1;min-width:0;max-height:65vh;overflow:auto;padding:18px;background:linear-gradient(130deg,#1e2620,#111613);border:1px solid #4c7258;border-radius:0 0 0 12px;box-shadow:-15px 12px 38px #000a;color:#e4e9dd}
-#archive-folders{display:flex;flex-direction:column;gap:0;max-height:220px;overflow-y:auto;overscroll-behavior:contain;padding:18px 8px 12px}
-.archive-folder{position:relative;display:block;width:100%;min-height:59px;margin:0;padding:14px 11px 10px;text-align:left;color:#322b1b;background:linear-gradient(100deg,#c7b58b,#d2c096);border:1px solid #e0d0a8;border-radius:3px 3px 5px 5px;cursor:pointer;font-weight:700;box-shadow:2px 4px 0 #8b7856,0 7px 12px #0004;transition:transform .28s cubic-bezier(.2,.8,.2,1),background .2s,box-shadow .28s;isolation:isolate}
-.archive-folder + .archive-folder{margin-top:-12px}
-.archive-folder:nth-child(1){z-index:3;transform:rotate(-.35deg)}
-.archive-folder:nth-child(2){z-index:2;transform:translateX(3px) rotate(.25deg)}
-.archive-folder:nth-child(3){z-index:1;transform:translateX(-2px) rotate(-.18deg)}
-.archive-folder::before{content:attr(data-tab);position:absolute;top:-15px;left:0;background:#d9c79b;border:1px solid #e0d0a8;border-bottom:0;border-radius:5px 5px 0 0;padding:2px 8px;font:700 10px monospace;box-shadow:1px -1px 3px #0002}
-.archive-folder:nth-child(even)::before{left:auto;right:0}
-.archive-folder:hover,.archive-folder:focus-visible,.archive-folder[aria-selected="true"]{z-index:5;background:linear-gradient(100deg,#e0cea1,#ecdbb0);transform:translateX(-7px) translateY(-3px) rotate(0);box-shadow:4px 7px 0 #8b7856,0 12px 18px #0007;outline:none}
-#archive-case{margin-top:14px;font-size:13px;line-height:1.6;border-top:1px solid #4c7258;padding-top:12px}
-@media(max-width:700px){#archive-drawer{top:auto;bottom:12px;width:min(315px,92vw);transform:translateX(calc(100% - 18px))}#archive-handle{flex-basis:18px;width:18px;height:72px;font-size:11px}#archive-panel{max-height:72vh;padding:12px}#archive-folders{padding-inline:7px}.archive-folder + .archive-folder{margin-top:-10px}.archive-folder:hover,.archive-folder:focus-visible,.archive-folder[aria-selected="true"]{transform:translateX(-4px) translateY(-2px) rotate(0)}#archive-drawer.open{transform:translateX(0)}}
-@media(prefers-reduced-motion:reduce){#archive-drawer,.archive-folder{transition:none}}
+#archive-panel{pointer-events:auto;flex:1;min-width:0;max-height:72vh;overflow:auto;padding:18px;background:linear-gradient(130deg,#1e2620,#111613);border:1px solid #4c7258;border-radius:0 0 0 12px;box-shadow:-15px 12px 38px #000a;color:#e4e9dd}
+.archive-tray{margin-top:13px;padding:18px 24px 22px;background:linear-gradient(135deg,#6c7470,#3b4441 4%,#171d1b 7%,#2a3430 94%,#75807b);border:1px solid #87928d;border-radius:5px;box-shadow:inset 0 0 0 7px #101614,inset 0 8px 18px #000b,0 10px 25px #0008}
+.archive-tray-label{display:flex;justify-content:space-between;margin:0 0 11px;color:#a4b5ab;font:700 10px monospace;letter-spacing:1.6px}
+#archive-folders{display:flex;flex-direction:column;max-height:250px;overflow-y:auto;overscroll-behavior:contain;padding:17px 20px 20px;background:repeating-linear-gradient(0deg,#d9d4bf 0 7px,#c6c0aa 8px 9px);border:1px solid #aaa38d;box-shadow:inset 0 6px 10px #645d4d70}
+.archive-folder{position:relative;display:block;width:100%;height:54px;flex:0 0 54px;margin:0;padding:0;border:1px solid #b4ad96;border-radius:2px;background:linear-gradient(100deg,#e9e4d0,#cfcaaf);box-shadow:0 4px 5px #443e2d55;color:transparent;cursor:pointer;transform-origin:50% 100%;transition:transform .75s cubic-bezier(.16,1,.3,1),box-shadow .75s cubic-bezier(.16,1,.3,1),filter .5s;isolation:isolate}
+.archive-folder + .archive-folder{margin-top:-17px}
+.archive-folder:nth-child(odd){transform:translateX(-3px) rotate(-.22deg)}.archive-folder:nth-child(even){transform:translateX(3px) rotate(.18deg)}
+.archive-folder::before{content:'';position:absolute;inset:8px 12px 7px;background:repeating-linear-gradient(0deg,transparent 0 9px,#817b6970 10px 11px);opacity:.34}
+.archive-folder::after{content:attr(data-tab);position:absolute;top:-19px;left:15px;padding:4px 10px 3px;border:1px solid #c3b995;border-bottom:0;border-radius:4px 4px 0 0;background:#dfd5b5;color:#242a24;font:700 10px monospace;letter-spacing:.7px;opacity:0;transform:translateY(11px);transition:opacity .35s ease,transform .75s cubic-bezier(.16,1,.3,1);white-space:nowrap;box-shadow:1px -1px 4px #0003}
+.archive-folder:nth-child(even)::after{left:auto;right:15px}
+.archive-folder:hover,.archive-folder:focus-visible{z-index:8;filter:brightness(1.06);transform:translateX(-12px) translateY(-6px) rotate(0);box-shadow:7px 12px 15px #211d14a0;outline:none}
+.archive-folder:hover::after,.archive-folder:focus-visible::after{opacity:1;transform:translateY(0)}
+.archive-folder .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.archive-hint{margin:11px 1px 0;color:#9cb5a5;font-size:12px;line-height:1.45}.archive-hint b{color:#d9e9dc}
+#archive-dossier{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:18px;background:#000b;backdrop-filter:blur(7px)}#archive-dossier.open{display:flex}
+.dossier-sheet{position:relative;width:min(860px,96vw);max-height:90vh;overflow:auto;padding:clamp(22px,5vw,54px);color:#27271f;background:linear-gradient(105deg,#d6ccae,#f4eedc 12%,#e8dfc9);border:1px solid #afa27e;border-radius:3px;box-shadow:0 22px 70px #000c;animation:dossierArrive .85s cubic-bezier(.16,1,.3,1)}
+@keyframes dossierArrive{from{opacity:0;transform:translateY(24px) scale(.94) rotate(.7deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+.dossier-close{position:absolute;right:13px;top:12px;border:1px solid #8f8568;background:#eee4cd;color:#443d2c;border-radius:3px;padding:5px 8px;font:700 12px monospace;cursor:pointer}.dossier-topline{padding-right:42px;font:700 10px monospace;letter-spacing:1.6px;color:#675c46}.dossier-title{margin:13px 0 4px;font:800 clamp(25px,5vw,44px)/1 Georgia,serif;letter-spacing:.04em}.dossier-subtitle{margin:0;font:700 12px monospace;letter-spacing:.5px;color:#5f5845}.top-secret{display:inline-block;margin:20px 0 15px;padding:5px 10px;border:3px solid #a9372c;color:#a9372c;font:800 20px/1 monospace;letter-spacing:1px;transform:rotate(-4deg);opacity:.83}.dossier-grid{display:grid;grid-template-columns:minmax(126px,.55fr) 1.45fr;gap:clamp(18px,4vw,44px);border-top:1px solid #9b9279;padding-top:21px}.dossier-photo{min-height:185px;border:6px solid #ede4cc;background:linear-gradient(145deg,#596158,#252c28);box-shadow:2px 4px 7px #51493180;display:flex;align-items:end;justify-content:center;color:#d7dccd;font-size:74px;filter:grayscale(1);transform:rotate(-1.5deg)}.dossier-facts{font:700 11px/1.8 monospace;color:#5d5746}.dossier-text{font:16px/1.65 Georgia,serif}.archive-link{border:0;border-bottom:2px solid #736b50;background:linear-gradient(transparent 68%,#cabf9370 0);padding:0 1px;color:inherit;font:inherit;cursor:pointer;transform:rotate(-.25deg)}.archive-link:nth-of-type(even){border-bottom-style:dashed;transform:rotate(.35deg)}
+@media(max-width:700px){#archive-drawer{top:auto;bottom:12px;width:min(360px,94vw);transform:translateX(calc(100% - 18px))}#archive-handle{flex-basis:18px;width:18px;height:72px;font-size:11px}#archive-panel{max-height:76vh;padding:12px}.archive-tray{padding:14px}.archive-folder:hover,.archive-folder:focus-visible{transform:translateX(-5px) translateY(-3px) rotate(0)}.dossier-grid{grid-template-columns:1fr}.dossier-photo{min-height:120px}.dossier-sheet{padding:27px 23px}#archive-drawer.open{transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){#archive-drawer,#archive-handle,.archive-folder,.archive-folder::after{transition:none}.dossier-sheet{animation:none}}
 </style>
 <aside id="archive-drawer" aria-label="Архивная картотека">
 <button id="archive-handle" type="button" aria-controls="archive-panel" aria-expanded="false" aria-label="Открыть архивную картотеку">▤</button>
-<div id="archive-panel">
-<div style="font:700 12px monospace;color:#86dca1;letter-spacing:2px">UMBRELLA // ARCHIVES</div>
-<p style="margin-top:8px;font-size:13px">Картотека персонала и свидетелей</p>
-<div id="archive-folders" role="listbox" aria-label="Выбор досье">
-<button class="archive-folder" type="button" data-person="jill" data-tab="J. VALENTINE" aria-selected="true">JILL VALENTINE<br><small>ДЕЛО № 001 · S.T.A.R.S.</small></button>
-<button class="archive-folder" type="button" data-person="chris" data-tab="C. REDFIELD" aria-selected="false">CHRIS REDFIELD<br><small>ДЕЛО № 002 · S.T.A.R.S.</small></button>
-<button class="archive-folder" type="button" data-person="leon" data-tab="L. KENNEDY" aria-selected="false">LEON S. KENNEDY<br><small>ДЕЛО № 003 · R.P.D.</small></button>
-</div>
-<section id="archive-case" aria-live="polite" aria-label="Выбранное досье"></section>
-</div></aside>
+<div id="archive-panel"><div style="font:700 12px monospace;color:#86dca1;letter-spacing:2px">UMBRELLA // ARCHIVES</div><p style="margin-top:8px;font-size:13px">Выдвижной архив — проведи по листам, чтобы найти дело</p>
+<div class="archive-tray"><div class="archive-tray-label"><span>DRAWER 01 / PERSONNEL</span><span>TOP VIEW</span></div><div id="archive-folders" role="listbox" aria-label="Выбор личного дела">
+<button class="archive-folder" type="button" data-person="jill" data-tab="J. VALENTINE" aria-selected="false"><span class="visually-hidden">Джилл Валентайн</span></button>
+<button class="archive-folder" type="button" data-person="chris" data-tab="C. REDFIELD" aria-selected="false"><span class="visually-hidden">Крис Редфилд</span></button>
+<button class="archive-folder" type="button" data-person="leon" data-tab="L. KENNEDY" aria-selected="false"><span class="visually-hidden">Леон С. Кеннеди</span></button>
+</div></div><p class="archive-hint"><b>Наведись на лист</b> — язычок покажет имя. Нажми, чтобы достать личное дело.</p></div></aside>
+<div id="archive-dossier" role="dialog" aria-modal="true" aria-label="Личное дело"><article class="dossier-sheet" id="dossier-sheet"></article></div>
 <script>
-(function(){
- const drawer=document.getElementById('archive-drawer');
- const handle=document.getElementById('archive-handle');
- const dossier=document.getElementById('archive-case');
- const folders=Array.from(document.querySelectorAll('#archive-folders .archive-folder'));
- const records={
- jill:{name:'Джилл Валентайн',subtitle:'Jill Valentine · S.T.A.R.S. / BSAA',text:'Участница S.T.A.R.S., пережившая инцидент в особняке Спенсера и события Раккун-Сити в 1998 году. Позднее стала одной из основательниц BSAA.'},
- chris:{name:'Крис Редфилд',subtitle:'Chris Redfield · S.T.A.R.S. / BSAA',text:'Бывший участник S.T.A.R.S., переживший инцидент в особняке Спенсера. Один из основателей BSAA.'},
- leon:{name:'Леон С. Кеннеди',subtitle:'Leon S. Kennedy · R.P.D. / правительство США',text:'Начинающий полицейский, оказавшийся в Раккун-Сити во время катастрофы 1998 года. Впоследствии стал федеральным агентом.'}
- };
- function select(person){const item=records[person];if(!item)return;folders.forEach(f=>{const selected=f.dataset.person===person;f.setAttribute('aria-selected',String(selected));f.classList.toggle('is-selected',selected)});dossier.replaceChildren();const h=document.createElement('h3');h.style.cssText='font-size:17px;font-weight:800';h.textContent=item.name;const sub=document.createElement('p');sub.style.color='#a8e1b8';sub.textContent=item.subtitle;const p=document.createElement('p');p.style.marginTop='10px';p.textContent=item.text;dossier.append(h,sub,p);}
- function setOpen(open){drawer.classList.toggle('open',open);handle.setAttribute('aria-expanded',String(open));handle.setAttribute('aria-label',open?'Закрыть архивную картотеку':'Открыть архивную картотеку');}
- handle.addEventListener('click',()=>setOpen(!drawer.classList.contains('open')));
- folders.forEach(f=>f.addEventListener('click',()=>select(f.dataset.person)));
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))setOpen(false)});
- select('jill');
-})();
+(function(){const drawer=document.getElementById('archive-drawer'),handle=document.getElementById('archive-handle'),folders=Array.from(document.querySelectorAll('#archive-folders .archive-folder')),modal=document.getElementById('archive-dossier'),sheet=document.getElementById('dossier-sheet');const records={jill:{name:'JILL VALENTINE',agency:'S.T.A.R.S. / BSAA',number:'JV-001',photo:'✦',text:'Выжившая после инцидента в особняке Спенсера и катастрофы в <button class="archive-link" onclick="archiveOpenScheme()">Раккун-Сити</button>. Одна из ключевых оперативниц BSAA.'},chris:{name:'CHRIS REDFIELD',agency:'S.T.A.R.S. / BSAA',number:'CR-002',photo:'◆',text:'Ветеран S.T.A.R.S. и сооснователь BSAA. Его отчёты связывают особняк Спенсера, <button class="archive-link" onclick="archiveOpenScheme()">Раккун-Сити</button> и глобальную борьбу с биооружием.'},leon:{name:'LEON S. KENNEDY',agency:'U.S. STRATCOM / DSO',number:'LK-003',photo:'●',text:'Офицер полиции, прибывший в <button class="archive-link" onclick="archiveOpenScheme()">Раккун-Сити</button> в день катастрофы 1998 года. Позже — оперативник Division of Security Operations при администрации президента США.'}};function setOpen(open){drawer.classList.toggle('open',open);handle.setAttribute('aria-expanded',String(open));handle.setAttribute('aria-label',open?'Закрыть архивную картотеку':'Открыть архивную картотеку')}function openDossier(person){const d=records[person];if(!d)return;folders.forEach(f=>f.setAttribute('aria-selected',String(f.dataset.person===person)));sheet.innerHTML=`<button class="dossier-close" type="button" aria-label="Закрыть личное дело">✕</button><div class="dossier-topline">${d.agency} // PERSONNEL ARCHIVE // FILE ${d.number}</div><h2 class="dossier-title">ЛИЧНОЕ ДЕЛО<br>${d.name}</h2><p class="dossier-subtitle">CLASSIFIED PERSONNEL RECORD · ДОСТУП ОГРАНИЧЕН</p><div class="top-secret">TOP SECRET</div><div class="dossier-grid"><div><div class="dossier-photo" aria-label="Фотография в личном деле">${d.photo}</div><div class="dossier-facts">CASE: ${d.number}<br>STATUS: ACTIVE<br>ARCHIVE: RESTRICTED</div></div><div class="dossier-text">${d.text}<p>Материалы дела будут развёрнуты здесь: схемы локаций, спутниковые снимки, вырезки из отчётов и полевые пометки — не игровые скриншоты.</p></div></div>`;modal.classList.add('open');sheet.querySelector('.dossier-close').focus()}function closeDossier(){modal.classList.remove('open')}window.archiveOpenScheme=function(){closeDossier();switchTab('scheme');window.scrollTo({top:0,behavior:'smooth'})};handle.addEventListener('click',()=>setOpen(!drawer.classList.contains('open')));folders.forEach(f=>f.addEventListener('click',()=>openDossier(f.dataset.person)));modal.addEventListener('click',e=>{if(e.target===modal)closeDossier()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(modal.classList.contains('open'))closeDossier();else if(drawer.classList.contains('open'))setOpen(false)}})})();
 </script>
 </body></html>
 
