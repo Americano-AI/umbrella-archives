@@ -2837,13 +2837,17 @@
 #archive-handle{pointer-events:auto;flex:0 0 35px;width:35px;height:100px;border:1px solid #527e62;border-right:0;border-radius:9px 0 0 9px;background:linear-gradient(120deg,#283b32,#111a16);color:#a8f4ba;box-shadow:-5px 0 22px #36ff7750;cursor:pointer}
 #archive-handle:hover,#archive-handle:focus-visible{background:#365b42;box-shadow:-5px 0 26px #36ff7790}
 #archive-panel{pointer-events:auto;flex:1;min-width:0;max-height:65vh;overflow:auto;padding:18px;background:linear-gradient(130deg,#1e2620,#111613);border:1px solid #4c7258;border-radius:0 0 0 12px;box-shadow:-15px 12px 38px #000a;color:#e4e9dd}
-#archive-folders{display:flex;flex-direction:column;gap:5px;max-height:220px;overflow-y:auto;overscroll-behavior:contain;padding:10px 4px}
-.archive-folder{position:relative;display:block;width:94%;margin:8px 0 0;padding:14px 10px;text-align:left;color:#322b1b;background:#c7b58b;border:1px solid #e0d0a8;border-radius:3px 3px 5px 5px;cursor:pointer;font-weight:700;box-shadow:2px 4px 0 #8b7856;transition:transform .2s,background .2s}
-.archive-folder::before{content:attr(data-tab);position:absolute;top:-15px;left:0;background:#d9c79b;border:1px solid #e0d0a8;border-bottom:0;border-radius:5px 5px 0 0;padding:2px 8px;font:700 10px monospace}
+#archive-folders{display:flex;flex-direction:column;gap:0;max-height:220px;overflow-y:auto;overscroll-behavior:contain;padding:18px 8px 12px}
+.archive-folder{position:relative;display:block;width:100%;min-height:59px;margin:0;padding:14px 11px 10px;text-align:left;color:#322b1b;background:linear-gradient(100deg,#c7b58b,#d2c096);border:1px solid #e0d0a8;border-radius:3px 3px 5px 5px;cursor:pointer;font-weight:700;box-shadow:2px 4px 0 #8b7856,0 7px 12px #0004;transition:transform .28s cubic-bezier(.2,.8,.2,1),background .2s,box-shadow .28s;isolation:isolate}
+.archive-folder + .archive-folder{margin-top:-12px}
+.archive-folder:nth-child(1){z-index:3;transform:rotate(-.35deg)}
+.archive-folder:nth-child(2){z-index:2;transform:translateX(3px) rotate(.25deg)}
+.archive-folder:nth-child(3){z-index:1;transform:translateX(-2px) rotate(-.18deg)}
+.archive-folder::before{content:attr(data-tab);position:absolute;top:-15px;left:0;background:#d9c79b;border:1px solid #e0d0a8;border-bottom:0;border-radius:5px 5px 0 0;padding:2px 8px;font:700 10px monospace;box-shadow:1px -1px 3px #0002}
 .archive-folder:nth-child(even)::before{left:auto;right:0}
-.archive-folder:hover,.archive-folder:focus-visible,.archive-folder[aria-selected="true"]{background:#e0cea1;transform:translateY(-2px)}
+.archive-folder:hover,.archive-folder:focus-visible,.archive-folder[aria-selected="true"]{z-index:5;background:linear-gradient(100deg,#e0cea1,#ecdbb0);transform:translateX(-7px) translateY(-3px) rotate(0);box-shadow:4px 7px 0 #8b7856,0 12px 18px #0007;outline:none}
 #archive-case{margin-top:14px;font-size:13px;line-height:1.6;border-top:1px solid #4c7258;padding-top:12px}
-@media(max-width:700px){#archive-drawer{top:auto;bottom:12px;width:min(315px,92vw);transform:translateX(calc(100% - 18px))}#archive-handle{flex-basis:18px;width:18px;height:72px;font-size:11px}#archive-panel{max-height:72vh;padding:12px}#archive-drawer.open{transform:translateX(0)}}
+@media(max-width:700px){#archive-drawer{top:auto;bottom:12px;width:min(315px,92vw);transform:translateX(calc(100% - 18px))}#archive-handle{flex-basis:18px;width:18px;height:72px;font-size:11px}#archive-panel{max-height:72vh;padding:12px}#archive-folders{padding-inline:7px}.archive-folder + .archive-folder{margin-top:-10px}.archive-folder:hover,.archive-folder:focus-visible,.archive-folder[aria-selected="true"]{transform:translateX(-4px) translateY(-2px) rotate(0)}#archive-drawer.open{transform:translateX(0)}}
 @media(prefers-reduced-motion:reduce){#archive-drawer,.archive-folder{transition:none}}
 </style>
 <aside id="archive-drawer" aria-label="Архивная картотека">
@@ -2869,7 +2873,7 @@
  chris:{name:'Крис Редфилд',subtitle:'Chris Redfield · S.T.A.R.S. / BSAA',text:'Бывший участник S.T.A.R.S., переживший инцидент в особняке Спенсера. Один из основателей BSAA.'},
  leon:{name:'Леон С. Кеннеди',subtitle:'Leon S. Kennedy · R.P.D. / правительство США',text:'Начинающий полицейский, оказавшийся в Раккун-Сити во время катастрофы 1998 года. Впоследствии стал федеральным агентом.'}
  };
- function select(person){const item=records[person];if(!item)return;folders.forEach(f=>f.setAttribute('aria-selected',String(f.dataset.person===person)));dossier.replaceChildren();const h=document.createElement('h3');h.style.cssText='font-size:17px;font-weight:800';h.textContent=item.name;const sub=document.createElement('p');sub.style.color='#a8e1b8';sub.textContent=item.subtitle;const p=document.createElement('p');p.style.marginTop='10px';p.textContent=item.text;dossier.append(h,sub,p);}
+ function select(person){const item=records[person];if(!item)return;folders.forEach(f=>{const selected=f.dataset.person===person;f.setAttribute('aria-selected',String(selected));f.classList.toggle('is-selected',selected)});dossier.replaceChildren();const h=document.createElement('h3');h.style.cssText='font-size:17px;font-weight:800';h.textContent=item.name;const sub=document.createElement('p');sub.style.color='#a8e1b8';sub.textContent=item.subtitle;const p=document.createElement('p');p.style.marginTop='10px';p.textContent=item.text;dossier.append(h,sub,p);}
  function setOpen(open){drawer.classList.toggle('open',open);handle.setAttribute('aria-expanded',String(open));handle.setAttribute('aria-label',open?'Закрыть архивную картотеку':'Открыть архивную картотеку');}
  handle.addEventListener('click',()=>setOpen(!drawer.classList.contains('open')));
  folders.forEach(f=>f.addEventListener('click',()=>select(f.dataset.person)));
@@ -2878,3 +2882,4 @@
 })();
 </script>
 </body></html>
+
